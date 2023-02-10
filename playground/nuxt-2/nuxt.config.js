@@ -15,11 +15,10 @@ export default {
       { name: 'format-detection', content: 'telephone=no' },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
-    script: [{ src: '/slim.min.js', defer: true }],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: ['../../slim/slim.css'],
+  css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [],

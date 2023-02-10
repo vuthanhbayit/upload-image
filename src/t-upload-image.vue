@@ -198,6 +198,14 @@ export default defineComponent({
       console.log('data', data)
     })
 
+    onMounted(() => {
+      let slimScript = document.createElement('script')
+      slimScript.setAttribute('src', 'https://cdn.jsdelivr.net/gh/vuthanhbayit/slim/slim.min.js')
+      slimScript.setAttribute('defer', 'true')
+
+      document.head.appendChild(slimScript)
+    })
+
     return {
       isCompressing,
       isCompressed,
@@ -212,3 +220,7 @@ export default defineComponent({
   },
 })
 </script>
+
+<style>
+@import url(https://cdn.jsdelivr.net/gh/vuthanhbayit/slim/slim.css);
+</style>
