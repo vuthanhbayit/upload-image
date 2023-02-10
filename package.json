@@ -1,0 +1,41 @@
+{
+  "name": "@vt7/upload-image",
+  "version": "0.0.1",
+  "description": "A repo upload image of @vt7",
+  "author": "Vu Thanh Bay <vuthanhbayit@gmail.com>",
+  "homepage": "",
+  "license": "ISC",
+  "main": "lib/index.mjs",
+  "module": "lib/index.mjs",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "prepublishOnly": "yarn build",
+    "build": "unbuild",
+    "lint": "eslint \"{src,test}/**/*.ts\""
+  },
+  "devDependencies": {
+    "@nuxtjs/eslint-config-typescript": "^12.0.0",
+    "@vue/composition-api": "^1.7.1",
+    "eslint": "^8.33.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-nuxt": "^4.0.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-vue": "^9.9.0",
+    "vue": "2.6.14",
+    "prettier": "^2.8.4",
+    "unbuild": "^0.7.4"
+  },
+  "dependencies": {
+    "@thinkvn/ui": "^3.4.0",
+    "@thinkvn/utils": "^3.4.0",
+    "browser-image-compression": "^2.0.0",
+    "element-ui": "^2.15.12",
+    "image-compare-viewer": "^1.5.0"
+  }
+}
