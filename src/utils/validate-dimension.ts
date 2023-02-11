@@ -1,11 +1,8 @@
 // @ts-ignore
 import MessageBox from 'element-ui/packages/message-box'
 import type { Dimension } from '../types'
-import type { Options } from './slim'
-import { createSlim } from './slim'
 import { getDimensionFile } from './dimension'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars,require-await
 export const confirmCrop = async (originSize: Dimension, size: Dimension) => {
   try {
     await MessageBox.confirm(
@@ -28,12 +25,12 @@ export const confirmCrop = async (originSize: Dimension, size: Dimension) => {
   }
 }
 
-export const notifyInvalidMinSize = async (originSize: Dimension, minSize: Dimension) => {
+export const notifyInvalidMinSize = async (originSize: Dimension, size: Dimension) => {
   try {
     await MessageBox.confirm(
       `<div>
            <div>Bạn đang upload ảnh có kích thước ${originSize.width}x${originSize.height}</div>
-           <div>Bạn cần upload ảnh có kích thước ${minSize.width}x${minSize.height}</div>
+           <div>Bạn cần upload ảnh có kích thước ${size.width}x${size.height}</div>
       </div>`,
       'Cảnh báo',
       {
@@ -50,36 +47,15 @@ export const notifyInvalidMinSize = async (originSize: Dimension, minSize: Dimen
   }
 }
 
-export const onCreateSlim = (file: File, options: Partial<Options>): Promise<Blob> => {
-  return new Promise((resolve, reject) => {
-    return createSlim(file, {
-      ...options,
-      instantEdit: true,
-      didConfirm({ output }) {
-        const canvas = output.image
-        canvas.toBlob(blob => {
-          resolve(blob!)
-        })
-      },
-      didCancel() {
-        // eslint-disable-next-line prefer-promise-reject-errors
-        reject('CROP_CANCEL')
-      },
-    })
-  })
-}
-
 export const validateDimension = async (
   file: File,
   {
     allowFileDimensionValidation,
     size,
-    minSize,
     callbackCrop,
   }: {
     allowFileDimensionValidation: boolean
     size?: Dimension
-    minSize?: Dimension
     callbackCrop?: () => Promise<void>
   }
 ) => {
@@ -89,16 +65,16 @@ export const validateDimension = async (
   let isValidMinSize = true
   let isValidSize = true
 
-  if (minSize) {
-    isValidMinSize = originSize.width >= minSize.width && originSize.height >= minSize.height
+  if (size) {
+    isValidMinSize = originSize.width >= size.width && originSize.height >= size.height
   }
 
   if (size) {
     isValidSize = originSize.width === size.width && originSize.height === size.height
   }
 
-  if (!isValidMinSize && minSize) {
-    await notifyInvalidMinSize(originSize, minSize)
+  if (!isValidMinSize && size) {
+    await notifyInvalidMinSize(originSize, size)
     // eslint-disable-next-line no-throw-literal
     throw 'INVALID_DIMENSION_MIN_SIZE'
   }

@@ -17,7 +17,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, PropType, ref, toRefs } from '@vue/composition-api'
+import { createDefaultImageWriter, openDefaultEditor } from '@vt7/pintura'
+import { defineComponent, PropType, ref, toRefs } from '@vue/composition-api'
 import TUpload from '@thinkvn/ui/components/upload/t-upload.vue'
 import {
   fileUpload,
@@ -25,7 +26,6 @@ import {
   getNameFromFilename,
   guesstimateMimeType,
   onConvertFileType,
-  onCreateSlim,
   validateDimension,
   validateFileSize,
   validateFileType,
@@ -33,6 +33,7 @@ import {
 import type { Dimension } from './types'
 import { createCompareImage } from './image-compare'
 import 'element-ui/lib/theme-chalk/message-box.css'
+import '@vt7/pintura/pintura.css'
 
 export default defineComponent({
   components: { TUpload },
@@ -42,9 +43,8 @@ export default defineComponent({
     acceptedFileTypes: { type: Array as PropType<string[]>, default: () => ['image/*'] },
 
     allowFileDimensionValidation: { type: Boolean, default: false },
-    ratio: { type: String, default: '' },
+    ratio: { type: Number, default: 1 },
     size: { type: Object as PropType<Dimension>, default: undefined },
-    minSize: { type: Object as PropType<Dimension>, default: undefined },
     forceType: { type: String, default: 'jpeg' },
 
     allowFileSize: { type: Boolean, default: false },
@@ -69,7 +69,6 @@ export default defineComponent({
       allowFileDimensionValidation,
       ratio,
       size,
-      minSize,
       forceType,
       allowFileSize,
       allowCompress,
@@ -103,21 +102,42 @@ export default defineComponent({
         await validateDimension(file, {
           allowFileDimensionValidation: allowFileDimensionValidation.value,
           size: size.value,
-          minSize: minSize.value,
           callbackCrop: async () => {
             isTransformFile.value = true
 
-            const blob = await onCreateSlim(file, {
-              ratio: ratio.value,
-              size: size.value,
-              minSize: minSize.value,
-              forceType: forceType.value,
+            const promise = new Promise<File>((resolve, reject) => {
+              const editor = openDefaultEditor( {
+                src: file,
+                utils: ['crop'],
+                cropEnableButtonFlipHorizontal: true,
+                cropEnableButtonFlipVertical: true,
+                imageCropMinSize: size.value,
+                imageCropAspectRatio: ratio.value,
+                imageWriter: createDefaultImageWriter({
+                  mimeType: guesstimateMimeType(forceType.value),
+                  targetSize: size.value
+                })
+              });
+
+              editor.on('process', (data) => {
+                resolve(data.dest)
+              });
+
+              editor.on('cancel', () => {
+                reject()
+              })
             })
 
-            file = toFile(blob, file.name)
-            transformFile.value = file
+            try {
+              file = await promise
+              transformFile.value = file
 
-            emit('crop', file)
+              console.log('size', await getDimensionFile(transformFile.value))
+
+              emit('crop', file)
+            } catch (e) {
+              return
+            }
           },
         })
 
@@ -183,14 +203,6 @@ export default defineComponent({
       })
     }
 
-    onMounted(() => {
-      let slimScript = document.createElement('script')
-      slimScript.setAttribute('src', 'https://cdn.jsdelivr.net/gh/vuthanhbayit/slim/slim.min.js')
-      slimScript.setAttribute('defer', 'true')
-
-      document.head.appendChild(slimScript)
-    })
-
     return {
       isCompressing,
       isCompressed,
@@ -205,7 +217,3 @@ export default defineComponent({
   },
 })
 </script>
-
-<style>
-@import url(https://cdn.jsdelivr.net/gh/vuthanhbayit/slim/slim.css);
-</style>

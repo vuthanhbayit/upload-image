@@ -799,6 +799,11 @@
     "@typescript-eslint/types" "5.51.0"
     eslint-visitor-keys "^3.3.0"
 
+"@vt7/pintura@^8.16.1":
+  version "8.16.1"
+  resolved "https://registry.yarnpkg.com/@vt7/pintura/-/pintura-8.16.1.tgz#8a7c99e8e3f7212d30a0a1678d8aa50aa0c11704"
+  integrity sha512-xB2IqECC1rSrifIr3NbB6TO5jAM1a7xg9Mt6rbWzmNyTCaLdLE+mUf+fIZWenHwofepJYPV9G2w8cZe/vcFzIA==
+
 "@vue/composition-api@^1.7.1":
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/@vue/composition-api/-/composition-api-1.7.1.tgz#aa6831be5a12817d93e89e247460c310dd7a3a32"

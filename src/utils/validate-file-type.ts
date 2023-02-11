@@ -4,7 +4,6 @@ import imageCompression from 'browser-image-compression'
 import { getFileType } from './file-type'
 import { isValidMimeType } from './mime-type'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars,require-await
 export const confirmValidateExtensions = (file: File, acceptedFileTypes: string[]) => {
   try {
     return MessageBox.confirm(
