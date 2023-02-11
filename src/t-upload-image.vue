@@ -54,7 +54,7 @@ export default defineComponent({
     apiKeys: { type: Array as PropType<string[]>, default: () => [] },
   },
 
-  emits: ['crop', 'convert', 'compress:error', 'compress:success'],
+  emits: ['crop', 'convert', 'compress:error', 'compress:success', 'change'],
 
   setup(props, { emit }) {
     const isCompressing = ref(false)
@@ -99,8 +99,6 @@ export default defineComponent({
       try {
         reset()
 
-        console.log('file 1', file, await getDimensionFile(file))
-
         originFile.value = file
 
         await validateDimension(file, {
@@ -124,8 +122,6 @@ export default defineComponent({
           },
         })
 
-        console.log('file 2', file, await getDimensionFile(file))
-
         await validateFileType(file, {
           allowFileTypeValidation: allowFileTypeValidation.value,
           acceptedFileTypes: acceptedFileTypes.value,
@@ -141,8 +137,6 @@ export default defineComponent({
           },
         })
 
-        console.log('file 3', file, await getDimensionFile(file))
-
         await validateFileSize(file, {
           allowFileSize: allowFileSize.value,
           allowCompress: allowCompress.value,
@@ -153,8 +147,6 @@ export default defineComponent({
             originFile.value = file
 
             const blob = await fileUpload(file)
-
-            console.log('blob', blob)
 
             if (!blob) {
               isCompressing.value = false
@@ -174,7 +166,7 @@ export default defineComponent({
           },
         })
 
-        console.log('file 4', file, await getDimensionFile(file))
+        emit('change', file)
       } catch (e) {
         console.log('e', e)
       }

@@ -39,8 +39,6 @@ export const fileUpload = async (file: File): Promise<Blob | null> => {
       }),
     }).then(res => res.json())
 
-    console.log('res', response)
-
     return response && response.length > 0 ? await toBlob(response[0].LossyURL) : null
   } catch (e) {
     console.log('e', e)
