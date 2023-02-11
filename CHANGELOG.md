@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.6](https://github.com/vuthanhbayit/upload-image/compare/v0.0.5...v0.0.6) (2023-02-11)
+
+
+### Bug Fixes
+
+* api key ([867e08a](https://github.com/vuthanhbayit/upload-image/commit/867e08a052958bc33a1ef68d7fa592dcfbb7df78))
+
 ### [0.0.5](https://github.com/vuthanhbayit/upload-image/compare/v0.0.4...v0.0.5) (2023-02-11)
 
 
