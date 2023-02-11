@@ -5,8 +5,8 @@
   "author": "Vu Thanh Bay <vuthanhbayit@gmail.com>",
   "homepage": "",
   "license": "ISC",
-  "main": "lib/index.mjs",
-  "module": "lib/index.mjs",
+  "main": "lib/index.js",
+  "module": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
     "lib",
