@@ -3,13 +3,7 @@
     <t-upload-image
       v-slot="{ on, percentSizeReduction, isCompressing, originFile, transformFile, isCompressed, compareImage }"
       :accepted-file-types="['image/*']"
-      :api-keys="[
-        'vPWT74PFUT3kB12tHZUk',
-        'NhWyFdSOUHVq1B2PtsxN',
-        'i2D9CVsLotb6D9ZWPP6O',
-        'acuINGlkpF72be9zKUaj',
-        'jptH7rtOsGwPoNmAxT3h',
-      ]"
+      api-key="vPWT74PFUT3kB12tHZUk"
       :force-type="'jpeg'"
       :min-size="{ width: 1600, height: 900 }"
       :ratio="'16:9'"
@@ -47,7 +41,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted } from '@vue/composition-api'
-import TUploadImage from '../../../src/t-upload-image.vue'
+import TUploadImage from '../../../lib/t-upload-image.vue'
 
 export default defineComponent({
   name: 'IndexPage',

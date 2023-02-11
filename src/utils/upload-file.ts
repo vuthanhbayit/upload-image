@@ -24,14 +24,14 @@ const toBlob = (url: string) => {
   return fetch(url).then(res => res.blob())
 }
 
-export const fileUpload = async (file: File): Promise<Blob | null> => {
+export const fileUpload = async (file: File, params: any): Promise<Blob | null> => {
   try {
     const filename = getNameFromFilename(file.name)
 
     const response: Array<Result> = await fetch(BASE_URL + '/post-reducer.php', {
       method: 'POST',
       body: toFormData({
-        key: '8F3W5AoZRJh9VlQNzKeS',
+        key: params.key,
         lossy: 1,
         file_paths: JSON.stringify({ [filename]: file.name }),
         [filename]: file,

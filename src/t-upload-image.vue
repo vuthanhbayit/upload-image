@@ -20,7 +20,6 @@
 import { defineComponent, onMounted, PropType, ref, toRefs } from '@vue/composition-api'
 import TUpload from '@thinkvn/ui/components/upload/t-upload.vue'
 import {
-  checkApiStatus,
   fileUpload,
   getDimensionFile,
   getNameFromFilename,
@@ -51,7 +50,7 @@ export default defineComponent({
     allowFileSize: { type: Boolean, default: false },
     allowCompress: { type: Boolean, default: false },
     maxFileSize: { type: Number, default: 400 * 1024 },
-    apiKeys: { type: Array as PropType<string[]>, default: () => [] },
+    apiKey: { type: String, default: '' },
   },
 
   emits: ['crop', 'convert', 'compress:error', 'compress:success', 'change'],
@@ -146,7 +145,7 @@ export default defineComponent({
             isTransformFile.value = true
             originFile.value = file
 
-            const blob = await fileUpload(file)
+            const blob = await fileUpload(file, { key: props.apiKey })
 
             if (!blob) {
               isCompressing.value = false
@@ -183,12 +182,6 @@ export default defineComponent({
         height,
       })
     }
-
-    onMounted(async () => {
-      const data = await checkApiStatus('vPWT74PFUT3kB12tHZUk')
-
-      console.log('data', data)
-    })
 
     onMounted(() => {
       let slimScript = document.createElement('script')
