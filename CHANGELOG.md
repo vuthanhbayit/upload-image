@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-alpha](https://github.com/vuthanhbayit/upload-image/compare/v0.0.7...v1.0.0-alpha) (2023-02-11)
+
+
+### Features
+
+* convert slim to pintura ([1a22b4d](https://github.com/vuthanhbayit/upload-image/commit/1a22b4dc12c37ba732ec595b9fdfeb7aae26c770))
+
 ### [0.0.7](https://github.com/vuthanhbayit/upload-image/compare/v0.0.6...v0.0.7) (2023-02-11)
 
 
