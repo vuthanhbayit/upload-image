@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.5](https://github.com/vuthanhbayit/upload-image/compare/v0.0.4...v0.0.5) (2023-02-11)
+
+
+### Bug Fixes
+
+* build file js ([e166020](https://github.com/vuthanhbayit/upload-image/commit/e166020b7f1dbcb7c29e86cdc1323cd7e4b0c0ad))
+
 ### [0.0.4](https://github.com/vuthanhbayit/upload-image/compare/v0.0.3...v0.0.4) (2023-02-11)
 
 
