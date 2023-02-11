@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0](https://github.com/vuthanhbayit/upload-image/compare/v1.0.0-alpha...v1.0.0) (2023-02-11)
+
 ## [1.0.0-alpha](https://github.com/vuthanhbayit/upload-image/compare/v0.0.7...v1.0.0-alpha) (2023-02-11)
 
 
