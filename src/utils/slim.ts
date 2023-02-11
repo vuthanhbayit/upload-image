@@ -86,12 +86,12 @@ export const createSlim = (file: File, options: Partial<Options>) => {
   const instance = new window.Slim(getSlimNode(), {
     ...options,
     didConfirm(data, instance) {
-      options.didConfirm?.(data, instance)
+      options.didConfirm && options.didConfirm(data, instance)
 
       setTimeout(() => instance.destroy(), 1000)
     },
     didCancel() {
-      options.didCancel?.()
+      options.didCancel && options.didCancel()
 
       setTimeout(() => instance.destroy(), 1000)
     },
