@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.7](https://github.com/vuthanhbayit/upload-image/compare/v0.0.6...v0.0.7) (2023-02-11)
+
+
+### Bug Fixes
+
+* optional chaining for func ([7c9f084](https://github.com/vuthanhbayit/upload-image/commit/7c9f084e43dbb3a3d696c3117b9170c5f094fe6c))
+
 ### [0.0.6](https://github.com/vuthanhbayit/upload-image/compare/v0.0.5...v0.0.6) (2023-02-11)
 
 
