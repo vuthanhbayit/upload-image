@@ -5,9 +5,8 @@
       :accepted-file-types="['image/*']"
       api-key="vPWT74PFUT3kB12tHZUk"
       :force-type="'jpeg'"
-      :min-size="{ width: 1600, height: 900 }"
-      :ratio="'16:9'"
-      :size="{ width: 1600, height: 900 }"
+      :ratio="4/6"
+      :size="{ width: 800, height: 1200 }"
       allow-compress
       allow-file-dimension-validation
       allow-file-size
@@ -41,7 +40,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted } from '@vue/composition-api'
-import TUploadImage from '../../../lib/t-upload-image.vue'
+import TUploadImage from '../../../src/t-upload-image.vue'
 
 export default defineComponent({
   name: 'IndexPage',

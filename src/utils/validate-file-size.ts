@@ -2,7 +2,7 @@
 import MessageBox from 'element-ui/packages/message-box'
 import { bytesToSize } from './index'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars,require-await
+// eslint-disable-next-line require-await
 export const confirmCompress = async (size: number, maxFileSize: number, allowCompress: boolean) => {
   try {
     return MessageBox.confirm(
