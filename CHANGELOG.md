@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/vuthanhbayit/upload-image/compare/v1.0.0...v1.1.0) (2023-03-02)
+
+
+### Features
+
+* allow convert file type ([5b46937](https://github.com/vuthanhbayit/upload-image/commit/5b46937e34fa86aef0d0ea534a48aeca1ba261b9))
+
 ## [1.0.0](https://github.com/vuthanhbayit/upload-image/compare/v1.0.0-alpha...v1.0.0) (2023-02-11)
 
 ## [1.0.0-alpha](https://github.com/vuthanhbayit/upload-image/compare/v0.0.7...v1.0.0-alpha) (2023-02-11)
