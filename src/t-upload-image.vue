@@ -1,5 +1,5 @@
 <template>
-  <t-upload v-slot="{ on }" @input="onSelectFile">
+  <t-upload v-slot="{ on }" :accept="acceptedFileTypes.join(', ')" @input="onSelectFile">
     <slot
       v-bind="{
         on,
@@ -40,6 +40,7 @@ export default defineComponent({
 
   props: {
     allowFileTypeValidation: { type: Boolean, default: false },
+    allowConvertFileType: { type: Boolean, default: false },
     acceptedFileTypes: { type: Array as PropType<string[]>, default: () => ['image/*'] },
 
     allowFileDimensionValidation: { type: Boolean, default: false },
@@ -65,6 +66,7 @@ export default defineComponent({
 
     const {
       allowFileTypeValidation,
+      allowConvertFileType,
       acceptedFileTypes,
       allowFileDimensionValidation,
       ratio,
@@ -106,7 +108,7 @@ export default defineComponent({
             isTransformFile.value = true
 
             const promise = new Promise<File>((resolve, reject) => {
-              const editor = openDefaultEditor( {
+              const editor = openDefaultEditor({
                 src: file,
                 utils: ['crop'],
                 cropEnableButtonFlipHorizontal: true,
@@ -115,13 +117,13 @@ export default defineComponent({
                 imageCropAspectRatio: ratio.value,
                 imageWriter: createDefaultImageWriter({
                   mimeType: guesstimateMimeType(forceType.value),
-                  targetSize: size.value
-                })
-              });
+                  targetSize: size.value,
+                }),
+              })
 
-              editor.on('process', (data) => {
+              editor.on('process', data => {
                 resolve(data.dest)
-              });
+              })
 
               editor.on('cancel', () => {
                 reject()
@@ -135,14 +137,13 @@ export default defineComponent({
               console.log('size', await getDimensionFile(transformFile.value))
 
               emit('crop', file)
-            } catch (e) {
-              return
-            }
+            } catch (e) {}
           },
         })
 
         await validateFileType(file, {
           allowFileTypeValidation: allowFileTypeValidation.value,
+          allowConvertFileType: allowConvertFileType.value,
           acceptedFileTypes: acceptedFileTypes.value,
           callbackConvertFileType: async () => {
             const newFile = await onConvertFileType(file, forceType.value)

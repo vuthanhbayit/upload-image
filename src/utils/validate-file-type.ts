@@ -1,18 +1,19 @@
 // @ts-ignore
 import MessageBox from 'element-ui/packages/message-box'
 import imageCompression from 'browser-image-compression'
-import { getFileType } from './file-type'
+import { getExtensionFromFilename, getFileType } from './file-type'
 import { isValidMimeType } from './mime-type'
 
-export const confirmValidateExtensions = (file: File, acceptedFileTypes: string[]) => {
+export const confirmValidateExtensions = (file: File, acceptedFileTypes: string[], allowConvertFileType: boolean) => {
   try {
     return MessageBox.confirm(
       `<div>
-           <div>Bạn đang upload ảnh có định dạng  ${getFileType(file)}</div>
+           <div>Bạn đang upload ảnh có định dạng  ${getExtensionFromFilename(file.name)}</div>
            <div>Bạn cần upload những ảnh có định dạng như: ${acceptedFileTypes.join(', ')}</div>
       </div>`,
       'Cảnh báo',
       {
+        showConfirmButton: allowConvertFileType,
         confirmButtonText: 'Auto convert',
         cancelButtonText: 'Upload lại',
         type: 'warning',
@@ -32,10 +33,12 @@ export const validateFileType = async (
   file: File,
   {
     allowFileTypeValidation,
+    allowConvertFileType,
     acceptedFileTypes,
     callbackConvertFileType,
   }: {
     allowFileTypeValidation: boolean
+    allowConvertFileType: boolean
     acceptedFileTypes: string[]
     callbackConvertFileType?: () => Promise<void>
   }
@@ -48,7 +51,7 @@ export const validateFileType = async (
   const isValid = isValidMimeType(acceptedFileTypes, fileType)
 
   if (!isValid) {
-    const isConfirm = await confirmValidateExtensions(file, acceptedFileTypes)
+    const isConfirm = await confirmValidateExtensions(file, acceptedFileTypes, allowConvertFileType)
 
     if (!isConfirm || !callbackConvertFileType) {
       // eslint-disable-next-line no-throw-literal
