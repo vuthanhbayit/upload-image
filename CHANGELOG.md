@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/vuthanhbayit/upload-image/compare/v1.1.1...v2.0.0) (2023-06-05)
+
+
+### Features
+
+* upgrade vue 2.7 ([9c9122b](https://github.com/vuthanhbayit/upload-image/commit/9c9122b69b425e5f399367b9810f27581a074764))
+
 ### [1.1.1](https://github.com/vuthanhbayit/upload-image/compare/v1.1.0...v1.1.1) (2023-04-20)
 
 ## [1.1.0](https://github.com/vuthanhbayit/upload-image/compare/v1.0.0...v1.1.0) (2023-03-02)
