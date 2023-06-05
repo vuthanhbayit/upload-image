@@ -3,14 +3,15 @@
     <t-upload-image
       v-slot="{ on, percentSizeReduction, isCompressing, originFile, transformFile, isCompressed, compareImage }"
       :accepted-file-types="['image/*']"
-      api-key="vPWT74PFUT3kB12tHZUk"
       :force-type="'jpeg'"
-      :ratio="4/6"
-      :size="{ width: 800, height: 1200 }"
+      :max-file-size="10 * 1024"
+      :ratio="4 / 6"
+      :size="{ width: 160, height: 240 }"
       allow-compress
       allow-file-dimension-validation
       allow-file-size
       allow-file-type-validation
+      api-key="vPWT74PFUT3kB12tHZUk"
     >
       <table v-if="isCompressed">
         <tr>
@@ -39,7 +40,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from '@vue/composition-api'
+import { defineComponent, onMounted } from 'vue'
 import TUploadImage from '../../../src/t-upload-image.vue'
 
 export default defineComponent({

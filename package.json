@@ -24,7 +24,6 @@
   },
   "devDependencies": {
     "@nuxtjs/eslint-config-typescript": "^12.0.0",
-    "@vue/composition-api": "^1.7.1",
     "eslint": "^8.33.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-nuxt": "^4.0.0",
@@ -33,14 +32,14 @@
     "prettier": "^2.8.4",
     "standard-version": "^9.3.1",
     "unbuild": "^0.7.4",
-    "vue": "2.6.14"
+    "vue": "2.7.14"
   },
   "dependencies": {
-    "@thinkvn/ui": "^3.4.0",
-    "@thinkvn/utils": "^3.4.0",
+    "@thinkvn/ui": "^4.0.0",
+    "@thinkvn/utils": "^4.0.0",
     "@vt7/pintura": "^8.16.1",
     "browser-image-compression": "^2.0.0",
-    "element-ui": "^2.15.12",
+    "element-ui": "^2.15.13",
     "image-compare-viewer": "^1.5.0"
   }
 }

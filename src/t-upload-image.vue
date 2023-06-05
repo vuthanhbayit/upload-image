@@ -18,7 +18,7 @@
 
 <script lang="ts">
 import { createDefaultImageWriter, openDefaultEditor } from '@vt7/pintura'
-import { defineComponent, PropType, ref, toRefs } from '@vue/composition-api'
+import { defineComponent, PropType, ref, toRefs } from 'vue'
 import TUpload from '@thinkvn/ui/components/upload/t-upload.vue'
 import {
   fileUpload,
@@ -126,6 +126,7 @@ export default defineComponent({
               })
 
               editor.on('cancel', () => {
+                // eslint-disable-next-line prefer-promise-reject-errors
                 reject()
               })
             })

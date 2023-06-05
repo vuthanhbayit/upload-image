@@ -46,12 +46,13 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref } from '@vue/composition-api'
+import { computed, defineComponent, getCurrentInstance, onMounted, ref } from 'vue'
 import { isString, toCssUnit } from '@thinkvn/utils'
+// @ts-ignore
+import ImageCompare from 'image-compare-viewer'
 import { bytesToSize } from '../utils'
 
 // @ts-ignore
-import ImageCompare from 'image-compare-viewer'
 import 'image-compare-viewer/dist/image-compare-viewer.min.css'
 
 export default defineComponent({
@@ -82,7 +83,8 @@ export default defineComponent({
     },
   },
 
-  setup(props, { root }) {
+  setup(props) {
+    const instance = getCurrentInstance()
     const imageCompareRef = ref<HTMLElement>()
     const viewer = ref()
 
@@ -121,7 +123,7 @@ export default defineComponent({
     })
 
     const onClose = () => {
-      root.$destroy()
+      instance?.proxy.$destroy()
     }
 
     return {
