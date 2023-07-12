@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.2](https://github.com/vuthanhbayit/upload-image/compare/v2.0.1...v2.0.2) (2023-07-12)
+
+
+### Bug Fixes
+
+* resolve transformed file ([fe92afe](https://github.com/vuthanhbayit/upload-image/commit/fe92afefd90bfda1067714e7dcd5ce658ae3c140))
+
 ### [2.0.1](https://github.com/vuthanhbayit/upload-image/compare/v2.0.0...v2.0.1) (2023-07-12)
 
 
