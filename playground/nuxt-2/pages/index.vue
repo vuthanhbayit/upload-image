@@ -4,9 +4,9 @@
       v-slot="{ on, percentSizeReduction, isCompressing, originFile, transformFile, isCompressed, compareImage }"
       :accepted-file-types="['image/*']"
       :force-type="'jpeg'"
-      :max-file-size="1 * 1024"
+      :max-file-size="50 * 1024"
       :ratio="4 / 6"
-      :size="{ width: 160, height: 240 }"
+      :size="{ width: 360, height: 240 }"
       allow-compress
       allow-file-dimension-validation
       allow-file-size

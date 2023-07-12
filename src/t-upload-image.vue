@@ -26,7 +26,6 @@ import {
   bytesToSize,
   fileUpload,
   getDimensionFile,
-  getExtensionFromFilename,
   getNameFromFilename,
   guesstimateMimeType,
   onConvertFileType,
@@ -98,76 +97,78 @@ export default defineComponent({
     }
 
     const onSelectFile = async (files: File[]) => {
-      let file = files[0]
+      const file = files[0]
 
       try {
         reset()
 
         originFile.value = file
+        transformFile.value = file
 
-        await validateDimension(file, {
-          allowFileDimensionValidation: allowFileDimensionValidation.value,
-          size: size.value,
-          callbackCrop: async () => {
-            isTransformFile.value = true
+        await handleValidateDimension(transformFile.value)
+        await handleValidateFileType(transformFile.value)
+        await handleValidateFileSize(transformFile.value)
 
-            const promise = new Promise<File>((resolve, reject) => {
-              const editor = openDefaultEditor({
-                src: file,
-                utils: ['crop'],
-                cropEnableButtonFlipHorizontal: true,
-                cropEnableButtonFlipVertical: true,
-                imageCropMinSize: size.value,
-                imageCropAspectRatio: ratio.value,
-                imageWriter: createDefaultImageWriter({
-                  mimeType: guesstimateMimeType(forceType.value),
-                  targetSize: size.value,
-                }),
-              })
-
-              editor.on('process', data => {
-                resolve(data.dest)
-              })
-
-              editor.on('cancel', () => {
-                // eslint-disable-next-line prefer-promise-reject-errors
-                reject()
-              })
-            })
-
-            try {
-              file = await promise
-              transformFile.value = file
-
-              console.log('size', await getDimensionFile(transformFile.value))
-
-              emit('crop', file)
-            } catch (e) {}
-          },
-        })
-
-        await validateFileType(file, {
-          allowFileTypeValidation: allowFileTypeValidation.value,
-          allowConvertFileType: allowConvertFileType.value,
-          acceptedFileTypes: acceptedFileTypes.value,
-          callbackConvertFileType: async () => {
-            const newFile = await onConvertFileType(file, forceType.value)
-            isTransformFile.value = true
-
-            file = toFile(newFile, file.name)
-
-            transformFile.value = file
-
-            emit('convert', file)
-          },
-        })
-
-        await handleValidateFileSize(file)
-
-        emit('change', file)
+        emit('change', transformFile.value)
       } catch (e) {
         console.log('e', e)
       }
+    }
+
+    const handleValidateDimension = (file: File) => {
+      return validateDimension(file, {
+        allowFileDimensionValidation: allowFileDimensionValidation.value,
+        size: size.value,
+        callbackCrop: async () => {
+          isTransformFile.value = true
+
+          const promise = new Promise<File>((resolve, reject) => {
+            const editor = openDefaultEditor({
+              src: file,
+              utils: ['crop'],
+              cropEnableButtonFlipHorizontal: true,
+              cropEnableButtonFlipVertical: true,
+              imageCropMinSize: size.value,
+              imageCropAspectRatio: ratio.value,
+              imageWriter: createDefaultImageWriter({
+                mimeType: guesstimateMimeType(forceType.value),
+                targetSize: size.value,
+              }),
+            })
+
+            editor.on('process', data => {
+              resolve(data.dest)
+            })
+
+            editor.on('cancel', () => {
+              // eslint-disable-next-line prefer-promise-reject-errors
+              reject()
+            })
+          })
+
+          try {
+            transformFile.value = await promise
+
+            emit('crop', transformFile.value)
+          } catch (e) {}
+        },
+      })
+    }
+
+    const handleValidateFileType = (file: File) => {
+      return validateFileType(file, {
+        allowFileTypeValidation: allowFileTypeValidation.value,
+        allowConvertFileType: allowConvertFileType.value,
+        acceptedFileTypes: acceptedFileTypes.value,
+        callbackConvertFileType: async () => {
+          const newFile = await onConvertFileType(file, forceType.value)
+          isTransformFile.value = true
+
+          transformFile.value = toFile(newFile, file.name)
+
+          emit('convert', file)
+        },
+      })
     }
 
     const handleValidateFileSize = (file: File) => {
@@ -194,14 +195,14 @@ export default defineComponent({
             return compressError()
           }
 
-          file = toFile(blob, file.name)
+          const newFile = toFile(blob, file.name)
 
-          if (file.size <= maxFileSize.value) {
-            transformFile.value = file
+          if (newFile.size <= maxFileSize.value) {
+            transformFile.value = newFile
             isCompressing.value = false
             isCompressed.value = true
 
-            emit('compress:success', file)
+            emit('compress:success', newFile)
           } else {
             MessageBox.alert(`Không thể nén ảnh xuống ${bytesToSize(maxFileSize.value)}`, 'Cảnh báo', {
               confirmButtonText: 'Huỷ bỏ',
@@ -215,6 +216,7 @@ export default defineComponent({
 
     const compareImage = async () => {
       const { width, height } = await getDimensionFile(originFile.value!)
+
       createCompareImage({
         leftImage: URL.createObjectURL(originFile.value!),
         leftImageSize: originFile.value?.size!,
