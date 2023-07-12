@@ -17,12 +17,16 @@
 </template>
 
 <script lang="ts">
+// @ts-ignore
+import MessageBox from 'element-ui/packages/message-box'
 import { createDefaultImageWriter, openDefaultEditor } from '@vt7/pintura'
 import { defineComponent, PropType, ref, toRefs } from 'vue'
 import TUpload from '@thinkvn/ui/components/upload/t-upload.vue'
 import {
+  bytesToSize,
   fileUpload,
   getDimensionFile,
+  getExtensionFromFilename,
   getNameFromFilename,
   guesstimateMimeType,
   onConvertFileType,
@@ -158,39 +162,55 @@ export default defineComponent({
           },
         })
 
-        await validateFileSize(file, {
-          allowFileSize: allowFileSize.value,
-          allowCompress: allowCompress.value,
-          maxFileSize: maxFileSize.value,
-          callbackCompress: async () => {
-            isCompressing.value = true
-            isTransformFile.value = true
-            originFile.value = file
-
-            const blob = await fileUpload(file, { key: props.apiKey })
-
-            if (!blob) {
-              isCompressing.value = false
-              isTransformFile.value = false
-              emit('compress:error')
-
-              return
-            }
-
-            file = toFile(blob, file.name)
-
-            transformFile.value = file
-            isCompressing.value = false
-            isCompressed.value = true
-
-            emit('compress:success', file)
-          },
-        })
+        await handleValidateFileSize(file)
 
         emit('change', file)
       } catch (e) {
         console.log('e', e)
       }
+    }
+
+    const handleValidateFileSize = (file: File) => {
+      const compressError = () => {
+        isCompressing.value = false
+        isTransformFile.value = false
+        emit('compress:error')
+
+        throw new Error('compress:error')
+      }
+
+      return validateFileSize(file, {
+        allowFileSize: allowFileSize.value,
+        allowCompress: allowCompress.value,
+        maxFileSize: maxFileSize.value,
+        callbackCompress: async () => {
+          isCompressing.value = true
+          isTransformFile.value = true
+          originFile.value = file
+
+          const blob = await fileUpload(file, { key: props.apiKey })
+
+          if (!blob) {
+            return compressError()
+          }
+
+          file = toFile(blob, file.name)
+
+          if (file.size <= maxFileSize.value) {
+            transformFile.value = file
+            isCompressing.value = false
+            isCompressed.value = true
+
+            emit('compress:success', file)
+          } else {
+            MessageBox.alert(`Không thể nén ảnh xuống ${bytesToSize(maxFileSize.value)}`, 'Cảnh báo', {
+              confirmButtonText: 'Huỷ bỏ',
+            })
+
+            return compressError()
+          }
+        },
+      })
     }
 
     const compareImage = async () => {
