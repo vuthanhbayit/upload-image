@@ -39,7 +39,13 @@ export const fileUpload = async (file: File, params: any): Promise<Blob | null> 
       }),
     }).then(res => res.json())
 
-    return response && response.length > 0 ? await toBlob(response[0].LossyURL) : null
+    if (!response.length) {
+      return null
+    }
+
+    const lossyUrl = response[0].LossyURL.replace('http://', 'https://')
+
+    return await toBlob(lossyUrl)
   } catch (e) {
     console.log('e', e)
 

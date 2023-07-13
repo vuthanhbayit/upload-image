@@ -192,6 +192,10 @@ export default defineComponent({
           const blob = await fileUpload(file, { key: props.apiKey })
 
           if (!blob) {
+            MessageBox.alert('Nén ảnh không thành công', 'Cảnh báo', {
+              confirmButtonText: 'OK',
+            })
+
             return compressError()
           }
 
@@ -205,7 +209,7 @@ export default defineComponent({
             emit('compress:success', newFile)
           } else {
             MessageBox.alert(`Không thể nén ảnh xuống ${bytesToSize(maxFileSize.value)}`, 'Cảnh báo', {
-              confirmButtonText: 'Huỷ bỏ',
+              confirmButtonText: 'OK',
             })
 
             return compressError()
