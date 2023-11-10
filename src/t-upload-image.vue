@@ -113,8 +113,6 @@ export default defineComponent({
         await handleValidateFileType(transformFile.value)
         await handleValidateFileSize(transformFile.value)
 
-        console.log('transformFile.value', transformFile.value)
-
         emit('change', transformFile.value)
       } catch (e) {
         console.log('e', e)
@@ -178,7 +176,6 @@ export default defineComponent({
           isTransformFile.value = true
 
           transformFile.value = toFile(newFile, file.name)
-          console.log('validateFileType', file.name)
 
           emit('convert', file)
         },
@@ -214,8 +211,6 @@ export default defineComponent({
           }
 
           const newFile = toFile(blob, file.name)
-
-          console.log('validateFileSize', newFile)
 
           if (newFile.size <= maxFileSize.value) {
             transformFile.value = newFile
