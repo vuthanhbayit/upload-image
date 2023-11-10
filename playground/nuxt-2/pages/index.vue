@@ -3,7 +3,6 @@
     <t-upload-image
       v-slot="{ on, percentSizeReduction, isCompressing, originFile, transformFile, isCompressed, compareImage }"
       :accepted-file-types="['image/*']"
-      :force-type="'jpg'"
       :max-file-size="400 * 1024"
       :size="{ width: 2000, height: 2000 }"
       allow-compress

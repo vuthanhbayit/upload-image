@@ -26,6 +26,8 @@ import {
   bytesToSize,
   fileUpload,
   getDimensionFile,
+  getExtensionFromFilename,
+  getFileType,
   getNameFromFilename,
   guesstimateMimeType,
   onConvertFileType,
@@ -81,10 +83,12 @@ export default defineComponent({
     } = toRefs(props)
 
     const toFile = (data: Blob | File, filename: string) => {
-      const newFileName = `${getNameFromFilename(filename)}.${forceType.value}`
+      const mimeType = forceType.value || getExtensionFromFilename(filename)
+
+      const newFileName = `${getNameFromFilename(filename)}.${mimeType}`
 
       return new File([data], newFileName, {
-        type: guesstimateMimeType(forceType.value),
+        type: guesstimateMimeType(mimeType),
       })
     }
 
@@ -108,6 +112,8 @@ export default defineComponent({
         await handleValidateDimension(transformFile.value)
         await handleValidateFileType(transformFile.value)
         await handleValidateFileSize(transformFile.value)
+
+        console.log('transformFile.value', transformFile.value)
 
         emit('change', transformFile.value)
       } catch (e) {
@@ -156,8 +162,6 @@ export default defineComponent({
           try {
             transformFile.value = await promise
 
-            console.log(await getDimensionFile(transformFile.value))
-
             emit('crop', transformFile.value)
           } catch (e) {}
         },
@@ -174,6 +178,7 @@ export default defineComponent({
           isTransformFile.value = true
 
           transformFile.value = toFile(newFile, file.name)
+          console.log('validateFileType', file.name)
 
           emit('convert', file)
         },
@@ -209,6 +214,8 @@ export default defineComponent({
           }
 
           const newFile = toFile(blob, file.name)
+
+          console.log('validateFileSize', newFile)
 
           if (newFile.size <= maxFileSize.value) {
             transformFile.value = newFile
