@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0-alpha.1](https://github.com/vuthanhbayit/upload-image/compare/v2.1.0-alpha.0...v2.1.0-alpha.1) (2023-11-10)
+
+
+### Bug Fixes
+
+* file name if have not forceType ([25f4adf](https://github.com/vuthanhbayit/upload-image/commit/25f4adfc9dc4826397a1beac0c0aa9697fa19c4c))
+
 ## [2.1.0-alpha.0](https://github.com/vuthanhbayit/upload-image/compare/v2.0.3...v2.1.0-alpha.0) (2023-11-10)
 
 
