@@ -45,11 +45,11 @@ export default defineComponent({
     allowFileTypeValidation: { type: Boolean, default: false },
     allowConvertFileType: { type: Boolean, default: false },
     acceptedFileTypes: { type: Array as PropType<string[]>, default: () => ['image/*'] },
+    forceType: { type: String, default: '' },
 
     allowFileDimensionValidation: { type: Boolean, default: false },
-    ratio: { type: Number, default: 1 },
+    ratio: { type: Number, default: undefined },
     size: { type: Object as PropType<Dimension>, default: undefined },
-    forceType: { type: String, default: 'jpeg' },
 
     allowFileSize: { type: Boolean, default: false },
     allowCompress: { type: Boolean, default: false },
@@ -131,9 +131,16 @@ export default defineComponent({
               imageCropMinSize: size.value,
               imageCropAspectRatio: ratio.value,
               imageWriter: createDefaultImageWriter({
-                mimeType: guesstimateMimeType(forceType.value),
+                mimeType: forceType.value && guesstimateMimeType(forceType.value),
                 targetSize: size.value,
               }),
+              cropSelectPresetOptions: [
+                [undefined, 'Custom'],
+                [1, 'Square'],
+                [4 / 3, '4x3'],
+                [3 / 4, '3x4'],
+                [16 / 9, '16x9'],
+              ],
             })
 
             editor.on('process', data => {
@@ -149,6 +156,8 @@ export default defineComponent({
           try {
             transformFile.value = await promise
 
+            console.log(await getDimensionFile(transformFile.value))
+
             emit('crop', transformFile.value)
           } catch (e) {}
         },
@@ -161,7 +170,7 @@ export default defineComponent({
         allowConvertFileType: allowConvertFileType.value,
         acceptedFileTypes: acceptedFileTypes.value,
         callbackConvertFileType: async () => {
-          const newFile = await onConvertFileType(file, forceType.value)
+          const newFile = await onConvertFileType(file, forceType.value || 'jpg')
           isTransformFile.value = true
 
           transformFile.value = toFile(newFile, file.name)

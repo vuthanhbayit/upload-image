@@ -59,27 +59,19 @@ export const validateDimension = async (
     callbackCrop?: () => Promise<void>
   }
 ) => {
-  if (!allowFileDimensionValidation) return true
+  if (!allowFileDimensionValidation || !size) return true
 
   const originSize = await getDimensionFile(file)
-  let isValidMinSize = true
-  let isValidSize = true
+  const isValidMinSize = originSize.width >= size.width && originSize.height >= size.height
+  const isValidSize = originSize.width === size.width && originSize.height === size.height
 
-  if (size) {
-    isValidMinSize = originSize.width >= size.width && originSize.height >= size.height
-  }
-
-  if (size) {
-    isValidSize = originSize.width === size.width && originSize.height === size.height
-  }
-
-  if (!isValidMinSize && size) {
+  if (!isValidMinSize) {
     await notifyInvalidMinSize(originSize, size)
     // eslint-disable-next-line no-throw-literal
     throw 'INVALID_DIMENSION_MIN_SIZE'
   }
 
-  if (!isValidSize && size) {
+  if (!isValidSize) {
     const isConfirm = await confirmCrop(originSize, size)
 
     if (!isConfirm || !callbackCrop) {
