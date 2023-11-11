@@ -19,7 +19,8 @@
 <script lang="ts">
 // @ts-ignore
 import MessageBox from 'element-ui/packages/message-box'
-import { createDefaultImageWriter, openDefaultEditor, type PinturaEditorDefaultOptions } from '@vt7/pintura'
+import { createDefaultImageWriter, openDefaultEditor } from '@vt7/pintura'
+import type { PinturaEditorDefaultOptions } from '@vt7/pintura'
 import { defineComponent, PropType, ref, toRefs } from 'vue'
 import { defu } from 'defu'
 import TUpload from '@thinkvn/ui/components/upload/t-upload.vue'
@@ -51,7 +52,8 @@ export default defineComponent({
 
     allowFileDimensionValidation: { type: Boolean, default: false },
     ratio: { type: Number, default: undefined },
-    size: { type: Object as PropType<Dimension>, default: undefined },
+    targetSize: { type: Object as PropType<Dimension>, default: undefined },
+    minSize: { type: Object as PropType<Dimension>, default: undefined },
     cropperOptions: { type: Object as PropType<PinturaEditorDefaultOptions>, default: undefined },
 
     allowFileSize: { type: Boolean, default: false },
@@ -76,7 +78,8 @@ export default defineComponent({
       acceptedFileTypes,
       allowFileDimensionValidation,
       ratio,
-      size,
+      targetSize,
+      minSize,
       forceType,
       allowFileSize,
       allowCompress,
@@ -123,7 +126,7 @@ export default defineComponent({
     const handleValidateDimension = (file: File) => {
       return validateDimension(file, {
         allowFileDimensionValidation: allowFileDimensionValidation.value,
-        size: size.value,
+        minSize: minSize.value || targetSize.value,
         callbackCrop: async () => {
           isTransformFile.value = true
 
@@ -133,11 +136,11 @@ export default defineComponent({
               utils: ['crop'],
               cropEnableButtonFlipHorizontal: true,
               cropEnableButtonFlipVertical: true,
-              imageCropMinSize: size.value,
+              imageCropMinSize: minSize.value,
               imageCropAspectRatio: ratio.value,
               imageWriter: createDefaultImageWriter({
                 mimeType: forceType.value && guesstimateMimeType(forceType.value),
-                targetSize: size.value,
+                targetSize: targetSize.value,
               }),
               cropSelectPresetOptions: [
                 [undefined, 'Custom'],
