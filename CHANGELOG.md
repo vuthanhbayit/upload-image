@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0-alpha.2](https://github.com/vuthanhbayit/upload-image/compare/v2.1.0-alpha.1...v2.1.0-alpha.2) (2023-11-11)
+
+
+### Features
+
+* support cropper options ([b7da84b](https://github.com/vuthanhbayit/upload-image/commit/b7da84baf987d2caa4ac552c3b72afa1997e2cb0))
+
 ## [2.1.0-alpha.1](https://github.com/vuthanhbayit/upload-image/compare/v2.1.0-alpha.0...v2.1.0-alpha.1) (2023-11-10)
 
 
