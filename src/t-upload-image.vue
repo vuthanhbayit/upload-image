@@ -19,15 +19,15 @@
 <script lang="ts">
 // @ts-ignore
 import MessageBox from 'element-ui/packages/message-box'
-import { createDefaultImageWriter, openDefaultEditor } from '@vt7/pintura'
+import { createDefaultImageWriter, openDefaultEditor, type PinturaEditorDefaultOptions } from '@vt7/pintura'
 import { defineComponent, PropType, ref, toRefs } from 'vue'
+import { defu } from 'defu'
 import TUpload from '@thinkvn/ui/components/upload/t-upload.vue'
 import {
   bytesToSize,
   fileUpload,
   getDimensionFile,
   getExtensionFromFilename,
-  getFileType,
   getNameFromFilename,
   guesstimateMimeType,
   onConvertFileType,
@@ -52,6 +52,7 @@ export default defineComponent({
     allowFileDimensionValidation: { type: Boolean, default: false },
     ratio: { type: Number, default: undefined },
     size: { type: Object as PropType<Dimension>, default: undefined },
+    cropperOptions: { type: Object as PropType<PinturaEditorDefaultOptions>, default: undefined },
 
     allowFileSize: { type: Boolean, default: false },
     allowCompress: { type: Boolean, default: false },
@@ -127,7 +128,7 @@ export default defineComponent({
           isTransformFile.value = true
 
           const promise = new Promise<File>((resolve, reject) => {
-            const editor = openDefaultEditor({
+            const options = defu(props.cropperOptions, {
               src: file,
               utils: ['crop'],
               cropEnableButtonFlipHorizontal: true,
@@ -141,11 +142,14 @@ export default defineComponent({
               cropSelectPresetOptions: [
                 [undefined, 'Custom'],
                 [1, 'Square'],
+                [3 / 2, '3x2'],
                 [4 / 3, '4x3'],
                 [3 / 4, '3x4'],
                 [16 / 9, '16x9'],
               ],
-            })
+            } as PinturaEditorDefaultOptions)
+
+            const editor = openDefaultEditor(options)
 
             editor.on('process', data => {
               resolve(data.dest)
