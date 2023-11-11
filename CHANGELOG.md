@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0-alpha.3](https://github.com/vuthanhbayit/upload-image/compare/v2.1.0-alpha.2...v2.1.0-alpha.3) (2023-11-11)
+
+
+### Bug Fixes
+
+* props min size ([4a11adc](https://github.com/vuthanhbayit/upload-image/commit/4a11adc42f886e86c1935895f712bc0190ecd57f))
+
 ## [2.1.0-alpha.2](https://github.com/vuthanhbayit/upload-image/compare/v2.1.0-alpha.1...v2.1.0-alpha.2) (2023-11-11)
 
 
