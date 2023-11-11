@@ -20,12 +20,15 @@
 // @ts-ignore
 import MessageBox from 'element-ui/packages/message-box'
 import { createDefaultImageWriter, openDefaultEditor } from '@vt7/pintura'
+import type { PinturaEditorDefaultOptions } from '@vt7/pintura'
 import { defineComponent, PropType, ref, toRefs } from 'vue'
+import { defu } from 'defu'
 import TUpload from '@thinkvn/ui/components/upload/t-upload.vue'
 import {
   bytesToSize,
   fileUpload,
   getDimensionFile,
+  getExtensionFromFilename,
   getNameFromFilename,
   guesstimateMimeType,
   onConvertFileType,
@@ -45,11 +48,13 @@ export default defineComponent({
     allowFileTypeValidation: { type: Boolean, default: false },
     allowConvertFileType: { type: Boolean, default: false },
     acceptedFileTypes: { type: Array as PropType<string[]>, default: () => ['image/*'] },
+    forceType: { type: String, default: '' },
 
     allowFileDimensionValidation: { type: Boolean, default: false },
-    ratio: { type: Number, default: 1 },
-    size: { type: Object as PropType<Dimension>, default: undefined },
-    forceType: { type: String, default: 'jpeg' },
+    ratio: { type: Number, default: undefined },
+    targetSize: { type: Object as PropType<Dimension>, default: undefined },
+    minSize: { type: Object as PropType<Dimension>, default: undefined },
+    cropperOptions: { type: Object as PropType<PinturaEditorDefaultOptions>, default: undefined },
 
     allowFileSize: { type: Boolean, default: false },
     allowCompress: { type: Boolean, default: false },
@@ -73,7 +78,8 @@ export default defineComponent({
       acceptedFileTypes,
       allowFileDimensionValidation,
       ratio,
-      size,
+      targetSize,
+      minSize,
       forceType,
       allowFileSize,
       allowCompress,
@@ -81,10 +87,12 @@ export default defineComponent({
     } = toRefs(props)
 
     const toFile = (data: Blob | File, filename: string) => {
-      const newFileName = `${getNameFromFilename(filename)}.${forceType.value}`
+      const mimeType = forceType.value || getExtensionFromFilename(filename)
+
+      const newFileName = `${getNameFromFilename(filename)}.${mimeType}`
 
       return new File([data], newFileName, {
-        type: guesstimateMimeType(forceType.value),
+        type: guesstimateMimeType(mimeType),
       })
     }
 
@@ -118,23 +126,33 @@ export default defineComponent({
     const handleValidateDimension = (file: File) => {
       return validateDimension(file, {
         allowFileDimensionValidation: allowFileDimensionValidation.value,
-        size: size.value,
+        minSize: minSize.value || targetSize.value,
         callbackCrop: async () => {
           isTransformFile.value = true
 
           const promise = new Promise<File>((resolve, reject) => {
-            const editor = openDefaultEditor({
+            const options = defu(props.cropperOptions, {
               src: file,
               utils: ['crop'],
               cropEnableButtonFlipHorizontal: true,
               cropEnableButtonFlipVertical: true,
-              imageCropMinSize: size.value,
+              imageCropMinSize: minSize.value,
               imageCropAspectRatio: ratio.value,
               imageWriter: createDefaultImageWriter({
-                mimeType: guesstimateMimeType(forceType.value),
-                targetSize: size.value,
+                mimeType: forceType.value && guesstimateMimeType(forceType.value),
+                targetSize: targetSize.value,
               }),
-            })
+              cropSelectPresetOptions: [
+                [undefined, 'Custom'],
+                [1, 'Square'],
+                [3 / 2, '3x2'],
+                [4 / 3, '4x3'],
+                [3 / 4, '3x4'],
+                [16 / 9, '16x9'],
+              ],
+            } as PinturaEditorDefaultOptions)
+
+            const editor = openDefaultEditor(options)
 
             editor.on('process', data => {
               resolve(data.dest)
@@ -161,7 +179,7 @@ export default defineComponent({
         allowConvertFileType: allowConvertFileType.value,
         acceptedFileTypes: acceptedFileTypes.value,
         callbackConvertFileType: async () => {
-          const newFile = await onConvertFileType(file, forceType.value)
+          const newFile = await onConvertFileType(file, forceType.value || 'jpg')
           isTransformFile.value = true
 
           transformFile.value = toFile(newFile, file.name)

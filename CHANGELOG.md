@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/vuthanhbayit/upload-image/compare/v2.1.0-alpha.3...v2.1.0) (2023-11-11)
+
+## [2.1.0-alpha.3](https://github.com/vuthanhbayit/upload-image/compare/v2.1.0-alpha.2...v2.1.0-alpha.3) (2023-11-11)
+
+
+### Bug Fixes
+
+* props min size ([4a11adc](https://github.com/vuthanhbayit/upload-image/commit/4a11adc42f886e86c1935895f712bc0190ecd57f))
+
+## [2.1.0-alpha.2](https://github.com/vuthanhbayit/upload-image/compare/v2.1.0-alpha.1...v2.1.0-alpha.2) (2023-11-11)
+
+
+### Features
+
+* support cropper options ([b7da84b](https://github.com/vuthanhbayit/upload-image/commit/b7da84baf987d2caa4ac552c3b72afa1997e2cb0))
+
+## [2.1.0-alpha.1](https://github.com/vuthanhbayit/upload-image/compare/v2.1.0-alpha.0...v2.1.0-alpha.1) (2023-11-10)
+
+
+### Bug Fixes
+
+* file name if have not forceType ([25f4adf](https://github.com/vuthanhbayit/upload-image/commit/25f4adfc9dc4826397a1beac0c0aa9697fa19c4c))
+
+## [2.1.0-alpha.0](https://github.com/vuthanhbayit/upload-image/compare/v2.0.3...v2.1.0-alpha.0) (2023-11-10)
+
+
+### Bug Fixes
+
+* select option aspect ratio ([fe1555c](https://github.com/vuthanhbayit/upload-image/commit/fe1555cb384a9ef1b82bde15dffe98a433895d40))
+
 ### [2.0.3](https://github.com/vuthanhbayit/upload-image/compare/v2.0.2...v2.0.3) (2023-07-13)
 
 

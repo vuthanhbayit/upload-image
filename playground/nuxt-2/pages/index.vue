@@ -3,10 +3,10 @@
     <t-upload-image
       v-slot="{ on, percentSizeReduction, isCompressing, originFile, transformFile, isCompressed, compareImage }"
       :accepted-file-types="['image/*']"
-      :force-type="'jpeg'"
-      :max-file-size="10 * 1024"
-      :ratio="4 / 6"
-      :size="{ width: 360, height: 240 }"
+      :max-file-size="400 * 1024"
+      :min-size="{ width: 2000, height: 1125 }"
+      :ratio="1"
+      :target-size="{ width: 2000, height: 2000 }"
       allow-compress
       allow-file-dimension-validation
       allow-file-size
@@ -48,12 +48,6 @@ export default defineComponent({
 
   components: {
     TUploadImage,
-  },
-
-  setup() {
-    onMounted(() => {
-      console.log('abc')
-    })
   },
 })
 </script>
