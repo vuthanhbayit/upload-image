@@ -8,7 +8,7 @@ export const confirmCrop = async (originSize: Dimension, size: Dimension) => {
     await MessageBox.confirm(
       `<div>
            <div>Bạn đang upload ảnh có kích thước ${originSize.width}x${originSize.height}</div>
-           <div>Bạn cần upload ảnh có kích thước thấp nhất là: ${size.width}x${size.height}</div>
+           <div>Bạn cần upload ảnh có kích thước là: ${size.width}x${size.height}</div>
       </div>`,
       'Cảnh báo',
       {
@@ -25,12 +25,12 @@ export const confirmCrop = async (originSize: Dimension, size: Dimension) => {
   }
 }
 
-export const notifyInvalidMinSize = async (originSize: Dimension, size: Dimension) => {
+export const notifyInvalidMinSize = async (originSize: Dimension, minSize: Dimension) => {
   try {
     await MessageBox.confirm(
       `<div>
            <div>Bạn đang upload ảnh có kích thước ${originSize.width}x${originSize.height}</div>
-           <div>Bạn cần upload ảnh có kích thước thấp nhất là: ${size.width}x${size.height}</div>
+           <div>Bạn cần upload ảnh có kích thước thấp nhất là: ${minSize.width}x${minSize.height}</div>
       </div>`,
       'Cảnh báo',
       {
@@ -52,10 +52,12 @@ export const validateDimension = async (
   {
     allowFileDimensionValidation,
     minSize,
+    targetSize,
     callbackCrop,
   }: {
     allowFileDimensionValidation: boolean
-    minSize?: Dimension
+    minSize: Dimension
+    targetSize: Dimension
     callbackCrop?: () => Promise<void>
   }
 ) => {
@@ -63,7 +65,7 @@ export const validateDimension = async (
 
   const originSize = await getDimensionFile(file)
   const isValidMinSize = originSize.width >= minSize.width && originSize.height >= minSize.height
-  const isValidSize = originSize.width === minSize.width && originSize.height === minSize.height
+  const isValidSize = originSize.width === targetSize.width && originSize.height === targetSize.height
 
   if (!isValidMinSize) {
     await notifyInvalidMinSize(originSize, minSize)
@@ -72,7 +74,7 @@ export const validateDimension = async (
   }
 
   if (!isValidSize) {
-    const isConfirm = await confirmCrop(originSize, minSize)
+    const isConfirm = await confirmCrop(originSize, targetSize)
 
     if (!isConfirm || !callbackCrop) {
       // eslint-disable-next-line no-throw-literal

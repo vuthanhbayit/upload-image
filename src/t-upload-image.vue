@@ -126,6 +126,7 @@ export default defineComponent({
     const handleValidateDimension = (file: File) => {
       return validateDimension(file, {
         allowFileDimensionValidation: allowFileDimensionValidation.value,
+        targetSize: targetSize.value,
         minSize: minSize.value || targetSize.value,
         callbackCrop: async () => {
           isTransformFile.value = true
