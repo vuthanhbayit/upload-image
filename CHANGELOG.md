@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0-alpha.0](https://github.com/vuthanhbayit/upload-image/compare/v2.1.1...v2.2.0-alpha.0) (2023-11-13)
+
+
+### Features
+
+* auto resize image by ratio ([7d338ad](https://github.com/vuthanhbayit/upload-image/commit/7d338ad95961e08db6441659fd5ef7aa2f96ec6b))
+
 ### [2.1.1](https://github.com/vuthanhbayit/upload-image/compare/v2.1.0...v2.1.1) (2023-11-13)
 
 
