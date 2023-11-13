@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.1.1](https://github.com/vuthanhbayit/upload-image/compare/v2.1.0...v2.1.1) (2023-11-13)
+
+
+### Bug Fixes
+
+* validate target size ([73bb6ab](https://github.com/vuthanhbayit/upload-image/commit/73bb6ab50637d9ab657da132ebb1f7876b9077eb))
+
 ## [2.1.0](https://github.com/vuthanhbayit/upload-image/compare/v2.1.0-alpha.3...v2.1.0) (2023-11-11)
 
 ## [2.1.0-alpha.3](https://github.com/vuthanhbayit/upload-image/compare/v2.1.0-alpha.2...v2.1.0-alpha.3) (2023-11-11)
