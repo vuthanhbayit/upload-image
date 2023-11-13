@@ -19,10 +19,9 @@
 <script lang="ts">
 // @ts-ignore
 import MessageBox from 'element-ui/packages/message-box'
-import { createDefaultImageWriter, openDefaultEditor } from '@vt7/pintura'
+import { createDefaultImageWriter, processDefaultImage } from '@vt7/pintura'
 import type { PinturaEditorDefaultOptions } from '@vt7/pintura'
 import { defineComponent, PropType, ref, toRefs } from 'vue'
-import { defu } from 'defu'
 import TUpload from '@thinkvn/ui/components/upload/t-upload.vue'
 import {
   bytesToSize,
@@ -51,10 +50,8 @@ export default defineComponent({
     forceType: { type: String, default: '' },
 
     allowFileDimensionValidation: { type: Boolean, default: false },
-    ratio: { type: Number, default: undefined },
     targetSize: { type: Object as PropType<Dimension>, default: undefined },
     minSize: { type: Object as PropType<Dimension>, default: undefined },
-    cropperOptions: { type: Object as PropType<PinturaEditorDefaultOptions>, default: undefined },
 
     allowFileSize: { type: Boolean, default: false },
     allowCompress: { type: Boolean, default: false },
@@ -77,7 +74,6 @@ export default defineComponent({
       allowConvertFileType,
       acceptedFileTypes,
       allowFileDimensionValidation,
-      ratio,
       targetSize,
       minSize,
       forceType,
@@ -117,56 +113,34 @@ export default defineComponent({
         await handleValidateFileType(transformFile.value)
         await handleValidateFileSize(transformFile.value)
 
+        console.log('final size: ', await getDimensionFile(transformFile.value))
+
         emit('change', transformFile.value)
       } catch (e) {
         console.log('e', e)
       }
     }
 
-    const handleValidateDimension = (file: File) => {
+    const handleValidateDimension = async (file: File) => {
+      const data = await processDefaultImage(file, {
+        imageWriter: createDefaultImageWriter({
+          mimeType: forceType.value && guesstimateMimeType(forceType.value),
+          targetSize: targetSize.value,
+        }),
+      })
+
+      const resizedSize = await getDimensionFile(data.dest)
+
       return validateDimension(file, {
         allowFileDimensionValidation: allowFileDimensionValidation.value,
         targetSize: targetSize.value,
         minSize: minSize.value || targetSize.value,
-        callbackCrop: async () => {
+        resizedSize,
+        callbackResize: () => {
           isTransformFile.value = true
 
-          const promise = new Promise<File>((resolve, reject) => {
-            const options = defu(props.cropperOptions, {
-              src: file,
-              utils: ['crop'],
-              cropEnableButtonFlipHorizontal: true,
-              cropEnableButtonFlipVertical: true,
-              imageCropMinSize: minSize.value,
-              imageCropAspectRatio: ratio.value,
-              imageWriter: createDefaultImageWriter({
-                mimeType: forceType.value && guesstimateMimeType(forceType.value),
-                targetSize: targetSize.value,
-              }),
-              cropSelectPresetOptions: [
-                [undefined, 'Custom'],
-                [1, 'Square'],
-                [3 / 2, '3x2'],
-                [4 / 3, '4x3'],
-                [3 / 4, '3x4'],
-                [16 / 9, '16x9'],
-              ],
-            } as PinturaEditorDefaultOptions)
-
-            const editor = openDefaultEditor(options)
-
-            editor.on('process', data => {
-              resolve(data.dest)
-            })
-
-            editor.on('cancel', () => {
-              // eslint-disable-next-line prefer-promise-reject-errors
-              reject()
-            })
-          })
-
           try {
-            transformFile.value = await promise
+            transformFile.value = data.dest
 
             emit('crop', transformFile.value)
           } catch (e) {}
