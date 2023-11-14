@@ -50,8 +50,10 @@ export default defineComponent({
     forceType: { type: String, default: '' },
 
     allowFileDimensionValidation: { type: Boolean, default: false },
+    allowResizeFile: { type: Boolean, default: false },
     targetSize: { type: Object as PropType<Dimension>, default: undefined },
     minSize: { type: Object as PropType<Dimension>, default: undefined },
+    fit: { type: String as PropType<'contain' | 'cover' | 'force'>, default: 'contain' },
 
     allowFileSize: { type: Boolean, default: false },
     allowCompress: { type: Boolean, default: false },
@@ -74,6 +76,7 @@ export default defineComponent({
       allowConvertFileType,
       acceptedFileTypes,
       allowFileDimensionValidation,
+      allowResizeFile,
       targetSize,
       minSize,
       forceType,
@@ -125,7 +128,11 @@ export default defineComponent({
       const data = await processDefaultImage(file, {
         imageWriter: createDefaultImageWriter({
           mimeType: forceType.value && guesstimateMimeType(forceType.value),
-          targetSize: targetSize.value,
+          targetSize: {
+            ...targetSize.value,
+            fit: props.fit,
+            upscale: false,
+          },
         }),
       })
 
@@ -133,6 +140,7 @@ export default defineComponent({
 
       return validateDimension(file, {
         allowFileDimensionValidation: allowFileDimensionValidation.value,
+        allowResizeFile: allowResizeFile.value,
         targetSize: targetSize.value,
         minSize: minSize.value || targetSize.value,
         resizedSize,

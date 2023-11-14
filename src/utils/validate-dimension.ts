@@ -52,12 +52,14 @@ export const validateDimension = async (
   file: File,
   {
     allowFileDimensionValidation,
+    allowResizeFile,
     minSize,
     targetSize,
     resizedSize,
     callbackResize,
   }: {
     allowFileDimensionValidation: boolean
+    allowResizeFile: boolean
     minSize: Dimension
     targetSize: Dimension
     resizedSize: Dimension
@@ -67,10 +69,10 @@ export const validateDimension = async (
   if (!allowFileDimensionValidation || !minSize) return true
 
   const originSize = await getDimensionFile(file)
-  const isInvalidMinSize = originSize.width < minSize.width && originSize.height < minSize.height
+  const isInvalidMinSize = originSize.width < minSize.width
   const isValidSize = isEqual(originSize, targetSize) || isEqual(originSize, resizedSize)
 
-  if (isInvalidMinSize) {
+  if (isInvalidMinSize || !allowResizeFile) {
     await notifyInvalidMinSize(originSize, minSize)
     // eslint-disable-next-line no-throw-literal
     throw 'INVALID_DIMENSION_MIN_SIZE'
