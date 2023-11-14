@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0-alpha.1](https://github.com/vuthanhbayit/upload-image/compare/v2.2.0-alpha.0...v2.2.0-alpha.1) (2023-11-14)
+
+
+### Features
+
+* allow resize file ([d8dce70](https://github.com/vuthanhbayit/upload-image/commit/d8dce7062a08f0332cae118c363f12d22518f740))
+
 ## [2.2.0-alpha.0](https://github.com/vuthanhbayit/upload-image/compare/v2.1.1...v2.2.0-alpha.0) (2023-11-13)
 
 
