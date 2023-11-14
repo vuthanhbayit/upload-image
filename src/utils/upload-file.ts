@@ -1,4 +1,4 @@
-import { shuffle, without } from '@thinkvn/utils'
+import { shuffle, without, toKebabCase } from '@thinkvn/utils'
 import { getNameFromFilename } from './file-type'
 
 const BASE_URL = 'https://api.shortpixel.com/v2'
@@ -20,7 +20,7 @@ const toBlob = (url: string) => {
 export const fileUpload = async (file: File, params: any): Promise<Blob | 'NOT_FOUND_KEY' | null> => {
   try {
     const key = shuffle(params.keys)[0]
-    const filename = getNameFromFilename(file.name)
+    const filename = toKebabCase(getNameFromFilename(file.name))
 
     const response = await fetch(BASE_URL + '/post-reducer.php', {
       method: 'POST',
