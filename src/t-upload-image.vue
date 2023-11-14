@@ -57,7 +57,7 @@ export default defineComponent({
     allowFileSize: { type: Boolean, default: false },
     allowCompress: { type: Boolean, default: false },
     maxFileSize: { type: Number, default: 400 * 1024 },
-    apiKey: { type: String, default: '' },
+    shortPixelApiKeys: { type: Array as PropType<string[]>, default: () => [] },
   },
 
   emits: ['crop', 'convert', 'compress:error', 'compress:success', 'change'],
@@ -189,7 +189,19 @@ export default defineComponent({
           isTransformFile.value = true
           originFile.value = file
 
-          const blob = await fileUpload(file, { key: props.apiKey })
+          const blob = await fileUpload(file, { keys: props.shortPixelApiKeys })
+
+          if (blob === 'NOT_FOUND_KEY') {
+            MessageBox.alert(
+              'Không thể nén ảnh do key hết hạn. Vui lòng báo lại cho bộ phận kỹ thuật để được hỗ trợ.',
+              'Cảnh báo',
+              {
+                confirmButtonText: 'OK',
+              }
+            )
+
+            return compressError()
+          }
 
           if (!blob) {
             MessageBox.alert('Nén ảnh không thành công', 'Cảnh báo', {

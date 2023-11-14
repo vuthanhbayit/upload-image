@@ -1,12 +1,5 @@
+import { shuffle, without, toKebabCase } from '@thinkvn/utils'
 import { getNameFromFilename } from './file-type'
-
-interface Result {
-  OriginalURL: string
-  LossyURL: string
-  OriginalSize: string
-  LossySize: string
-  PercentImprovement: string
-}
 
 const BASE_URL = 'https://api.shortpixel.com/v2'
 
@@ -24,20 +17,35 @@ const toBlob = (url: string) => {
   return fetch(url).then(res => res.blob())
 }
 
-export const fileUpload = async (file: File, params: any): Promise<Blob | null> => {
+export const fileUpload = async (file: File, params: any): Promise<Blob | 'NOT_FOUND_KEY' | null> => {
   try {
-    const filename = getNameFromFilename(file.name)
+    const key = shuffle(params.keys)[0]
+    const filename = toKebabCase(getNameFromFilename(file.name))
 
-    const response: Array<Result> = await fetch(BASE_URL + '/post-reducer.php', {
+    const response = await fetch(BASE_URL + '/post-reducer.php', {
       method: 'POST',
       body: toFormData({
-        key: params.key,
+        key,
         lossy: 1,
         file_paths: JSON.stringify({ [filename]: file.name }),
         [filename]: file,
         wait: 30,
       }),
     }).then(res => res.json())
+
+    if (response.Status) {
+      if (response.Status.Code === -403) {
+        const keys = without(params.keys, key)
+
+        if (keys.length === 0) {
+          return 'NOT_FOUND_KEY'
+        }
+
+        return fileUpload(file, { keys })
+      }
+
+      return null
+    }
 
     if (!response.length) {
       return null
