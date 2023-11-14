@@ -1,5 +1,4 @@
-import { shuffle } from '@thinkvn/utils'
-import { without } from '@thinkvn/utils/lib/array'
+import { shuffle, without } from '@thinkvn/utils'
 import { getNameFromFilename } from './file-type'
 
 const BASE_URL = 'https://api.shortpixel.com/v2'
