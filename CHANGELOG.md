@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0-alpha.2](https://github.com/vuthanhbayit/upload-image/compare/v2.2.0-alpha.1...v2.2.0-alpha.2) (2023-11-14)
+
+
+### Bug Fixes
+
+* validate dimensions ([7644604](https://github.com/vuthanhbayit/upload-image/commit/76446047ba19ae43e0305329f2cfbf537256e42c))
+
 ## [2.2.0-alpha.1](https://github.com/vuthanhbayit/upload-image/compare/v2.2.0-alpha.0...v2.2.0-alpha.1) (2023-11-14)
 
 
