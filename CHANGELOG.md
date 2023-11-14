@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0](https://github.com/vuthanhbayit/upload-image/compare/v2.2.0-alpha.2...v2.2.0) (2023-11-14)
+
+## [2.2.0-alpha.2](https://github.com/vuthanhbayit/upload-image/compare/v2.2.0-alpha.1...v2.2.0-alpha.2) (2023-11-14)
+
+
+### Bug Fixes
+
+* validate dimensions ([7644604](https://github.com/vuthanhbayit/upload-image/commit/76446047ba19ae43e0305329f2cfbf537256e42c))
+
+## [2.2.0-alpha.1](https://github.com/vuthanhbayit/upload-image/compare/v2.2.0-alpha.0...v2.2.0-alpha.1) (2023-11-14)
+
+
+### Features
+
+* allow resize file ([d8dce70](https://github.com/vuthanhbayit/upload-image/commit/d8dce7062a08f0332cae118c363f12d22518f740))
+
+## [2.2.0-alpha.0](https://github.com/vuthanhbayit/upload-image/compare/v2.1.1...v2.2.0-alpha.0) (2023-11-13)
+
+
+### Features
+
+* auto resize image by ratio ([7d338ad](https://github.com/vuthanhbayit/upload-image/commit/7d338ad95961e08db6441659fd5ef7aa2f96ec6b))
+
 ### [2.1.1](https://github.com/vuthanhbayit/upload-image/compare/v2.1.0...v2.1.1) (2023-11-13)
 
 

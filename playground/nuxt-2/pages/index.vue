@@ -1,41 +1,37 @@
 <template>
   <div>
     <t-upload-image
-      v-slot="{ on, percentSizeReduction, isCompressing, originFile, transformFile, isCompressed, compareImage }"
+      v-slot="{ on }"
       :accepted-file-types="['image/*']"
       :max-file-size="400 * 1024"
       :min-size="{ width: 2000, height: 1125 }"
-      :ratio="1"
       :target-size="{ width: 2000, height: 2000 }"
       allow-compress
       allow-file-dimension-validation
       allow-file-size
       allow-file-type-validation
+      allow-resize-file
       api-key="vPWT74PFUT3kB12tHZUk"
     >
-      <table v-if="isCompressed">
-        <tr>
-          <td>Before</td>
-          <td>Status</td>
-          <td>After</td>
-          <td>Action</td>
-        </tr>
-
-        <tr>
-          <td>{{ originFile.size }}</td>
-          <td>-{{ percentSizeReduction }}%</td>
-          <td>{{ transformFile.size }}</td>
-          <td>
-            <button @click="compareImage">Compare</button>
-          </td>
-        </tr>
-      </table>
-      <button v-else :disabled="isCompressing" v-on="on">
-        <span v-if="isCompressing">Đang nén ảnh</span>
-        <span v-else>Thêm ảnh</span>
-      </button>
+      <button v-on="on">2000x2000</button>
     </t-upload-image>
-    abc
+
+    <t-upload-image
+      v-slot="{ on }"
+      :accepted-file-types="['image/*']"
+      :max-file-size="100 * 1024"
+      :min-size="{ width: 1200, height: 675 }"
+      :target-size="{ width: 1200, height: 675 }"
+      allow-compress
+      allow-file-dimension-validation
+      allow-file-size
+      allow-file-type-validation
+      api-key="vPWT74PFUT3kB12tHZUk"
+      fit="force"
+      force-type="jpeg"
+    >
+      <button v-on="on">1200x675</button>
+    </t-upload-image>
   </div>
 </template>
 

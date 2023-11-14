@@ -1,18 +1,19 @@
 // @ts-ignore
 import MessageBox from 'element-ui/packages/message-box'
+import { isEqual } from '@thinkvn/utils'
 import type { Dimension } from '../types'
 import { getDimensionFile } from './dimension'
 
-export const confirmCrop = async (originSize: Dimension, size: Dimension) => {
+export const confirmResize = async (originSize: Dimension, resizedSize: Dimension) => {
   try {
     await MessageBox.confirm(
       `<div>
            <div>Bạn đang upload ảnh có kích thước ${originSize.width}x${originSize.height}</div>
-           <div>Bạn cần upload ảnh có kích thước là: ${size.width}x${size.height}</div>
+           <div>Chúng tôi sẽ tự động resize sang kích thước ${resizedSize.width}x${resizedSize.height}</div>
       </div>`,
       'Cảnh báo',
       {
-        confirmButtonText: 'Cắt ảnh này',
+        confirmButtonText: 'Resize ngay',
         cancelButtonText: 'Upload ảnh khác',
         type: 'warning',
         dangerouslyUseHTMLString: true,
@@ -51,21 +52,25 @@ export const validateDimension = async (
   file: File,
   {
     allowFileDimensionValidation,
+    allowResizeFile,
     minSize,
     targetSize,
-    callbackCrop,
+    resizedSize,
+    callbackResize,
   }: {
     allowFileDimensionValidation: boolean
+    allowResizeFile: boolean
     minSize: Dimension
     targetSize: Dimension
-    callbackCrop?: () => Promise<void>
+    resizedSize: Dimension
+    callbackResize: () => void
   }
 ) => {
   if (!allowFileDimensionValidation || !minSize) return true
 
   const originSize = await getDimensionFile(file)
-  const isValidMinSize = originSize.width >= minSize.width && originSize.height >= minSize.height
-  const isValidSize = originSize.width === targetSize.width && originSize.height === targetSize.height
+  const isValidMinSize = originSize.width >= minSize.width
+  const isValidSize = isEqual(originSize, targetSize) || isEqual(originSize, resizedSize)
 
   if (!isValidMinSize) {
     await notifyInvalidMinSize(originSize, minSize)
@@ -74,13 +79,19 @@ export const validateDimension = async (
   }
 
   if (!isValidSize) {
-    const isConfirm = await confirmCrop(originSize, targetSize)
+    if (allowResizeFile) {
+      const isConfirm = await confirmResize(originSize, resizedSize)
 
-    if (!isConfirm || !callbackCrop) {
-      // eslint-disable-next-line no-throw-literal
-      throw 'INVALID_DIMENSION_SIZE'
+      if (!isConfirm || !callbackResize) {
+        // eslint-disable-next-line no-throw-literal
+        throw 'INVALID_DIMENSION_SIZE'
+      } else {
+        await callbackResize()
+      }
     } else {
-      await callbackCrop()
+      await notifyInvalidMinSize(originSize, targetSize)
+      // eslint-disable-next-line no-throw-literal
+      throw 'INVALID_DIMENSION_MIN_SIZE'
     }
   }
 
