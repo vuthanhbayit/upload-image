@@ -69,23 +69,29 @@ export const validateDimension = async (
   if (!allowFileDimensionValidation || !minSize) return true
 
   const originSize = await getDimensionFile(file)
-  const isInvalidMinSize = originSize.width < minSize.width
+  const isValidMinSize = originSize.width >= minSize.width
   const isValidSize = isEqual(originSize, targetSize) || isEqual(originSize, resizedSize)
 
-  if (isInvalidMinSize || !allowResizeFile) {
+  if (!isValidMinSize) {
     await notifyInvalidMinSize(originSize, minSize)
     // eslint-disable-next-line no-throw-literal
     throw 'INVALID_DIMENSION_MIN_SIZE'
   }
 
   if (!isValidSize) {
-    const isConfirm = await confirmResize(originSize, resizedSize)
+    if (allowResizeFile) {
+      const isConfirm = await confirmResize(originSize, resizedSize)
 
-    if (!isConfirm || !callbackResize) {
-      // eslint-disable-next-line no-throw-literal
-      throw 'INVALID_DIMENSION_SIZE'
+      if (!isConfirm || !callbackResize) {
+        // eslint-disable-next-line no-throw-literal
+        throw 'INVALID_DIMENSION_SIZE'
+      } else {
+        await callbackResize()
+      }
     } else {
-      await callbackResize()
+      await notifyInvalidMinSize(originSize, targetSize)
+      // eslint-disable-next-line no-throw-literal
+      throw 'INVALID_DIMENSION_MIN_SIZE'
     }
   }
 

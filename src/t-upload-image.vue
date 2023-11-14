@@ -20,7 +20,6 @@
 // @ts-ignore
 import MessageBox from 'element-ui/packages/message-box'
 import { createDefaultImageWriter, processDefaultImage } from '@vt7/pintura'
-import type { PinturaEditorDefaultOptions } from '@vt7/pintura'
 import { defineComponent, PropType, ref, toRefs } from 'vue'
 import TUpload from '@thinkvn/ui/components/upload/t-upload.vue'
 import {
