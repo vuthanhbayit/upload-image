@@ -151,8 +151,8 @@ const options = {
   // Label Defaults
   showLabels: true,
   labelOptions: {
-    before: 'Before',
-    after: 'After',
+    before: 'Ảnh trước nén',
+    after: 'Ảnh sau nén',
     onHover: false,
   },
 

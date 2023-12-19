@@ -1,18 +1,21 @@
 <template>
   <div>
     <t-upload-image
-      v-slot="{ on }"
+      v-slot="{ on, isCompressing, isCompressed, compareImage }"
       :accepted-file-types="['image/*']"
       :max-file-size="400 * 1024"
       :min-size="{ width: 2000, height: 1125 }"
       :short-pixel-api-keys="['i2D9CVsLotb6D9ZWPP6O', 'vPWT74PFUT3kB12tHZUk']"
       :target-size="{ width: 2000, height: 2000 }"
+      allow-compare-image
       allow-compress
       allow-file-dimension-validation
       allow-file-size
       allow-file-type-validation
       allow-resize-file
     >
+      <span v-if="isCompressing">isCompressing</span>
+      <button v-if="isCompressed" @click="compareImage">compareImage</button>
       <button v-on="on">2000x2000</button>
     </t-upload-image>
 

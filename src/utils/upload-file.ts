@@ -2,6 +2,11 @@ import { shuffle, without, toKebabCase } from '@thinkvn/utils'
 import { getNameFromFilename } from './file-type'
 
 const BASE_URL = 'https://api.shortpixel.com/v2'
+const COMPRESS_TYPE = {
+  lossy: 1,
+  glossy: 2,
+  lossless: 0,
+}
 
 const toFormData = (data: Record<string, any>) => {
   const formData = new FormData()
@@ -26,7 +31,7 @@ export const fileUpload = async (file: File, params: any): Promise<Blob | 'NOT_F
       method: 'POST',
       body: toFormData({
         key,
-        lossy: 1,
+        lossy: COMPRESS_TYPE.glossy,
         file_paths: JSON.stringify({ [filename]: file.name }),
         [filename]: file,
         wait: 30,

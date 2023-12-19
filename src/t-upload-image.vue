@@ -56,6 +56,7 @@ export default defineComponent({
 
     allowFileSize: { type: Boolean, default: false },
     allowCompress: { type: Boolean, default: false },
+    allowCompareImage: { type: Boolean, default: false },
     maxFileSize: { type: Number, default: 400 * 1024 },
     shortPixelApiKeys: { type: Array as PropType<string[]>, default: () => [] },
   },
@@ -219,6 +220,10 @@ export default defineComponent({
             isCompressed.value = true
 
             emit('compress:success', newFile)
+
+            if (props.allowCompareImage) {
+              await compareImage()
+            }
           } else {
             MessageBox.alert(`Không thể nén ảnh xuống ${bytesToSize(maxFileSize.value)}`, 'Cảnh báo', {
               confirmButtonText: 'OK',
