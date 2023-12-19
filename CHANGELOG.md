@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.4.0](https://github.com/vuthanhbayit/upload-image/compare/v2.3.0...v2.4.0) (2023-12-19)
+
+
+### Features
+
+* allow compare image and glossy compress ([a3e7487](https://github.com/vuthanhbayit/upload-image/commit/a3e7487a714d86fa9a88e2e216132ccbd06d356b))
+
 ## [2.3.0](https://github.com/vuthanhbayit/upload-image/compare/v2.3.0-alpha.1...v2.3.0) (2023-11-14)
 
 ## [2.3.0-alpha.1](https://github.com/vuthanhbayit/upload-image/compare/v2.3.0-alpha.0...v2.3.0-alpha.1) (2023-11-14)
